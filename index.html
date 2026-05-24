@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pattern Calculator</title>
+
+  <style>
+
+    body {
+      font-family: Arial;
+      padding: 40px;
+      background: #f5f5f5;
+    }
+
+    .box {
+     background: peachpuff;
+     padding: 30px;
+     border-radius: 10px;
+
+     display: flex;
+     gap: 60px;
+
+     align-items: flex-start;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      background: #e8c1c1;
+      border: none;
+      font-size: 20px;
+      box-sizing: border-box;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .result {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 40px;
+
+    }
+
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .inputs {
+      width: 50%;
+    }
+
+    .results {
+      width: 50%;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <div class="inputs">
+
+  <h2>Pattern Calculator</h2>
+
+  <label>Gauge stitches per cm</label>
+  <input type="number" id="gaugeStitchesPerCm">
+
+  <label>Gauge rows per cm</label>
+  <input type="number" id="gaugeRowsPerCm">
+
+  <label>Front bust (cm)</label>
+  <input type="number" id="frontBust">
+
+  <label>Back bust (cm)</label>
+  <input type="number" id="backBust">
+
+  <label>Length to armpit (cm)</label>
+  <input type="number" id="lengthToArmpit">
+
+  <label>Length from armpit to neck (cm)</label>
+  <input type="number" id="lengthFromArmpitToNeck">
+
+  <label>Neck width (cm)</label>
+  <input type="number" id="neckWidth">
+
+  <label>Neck circumference (cm)</label>
+  <input type="number" id="neck">
+
+  <label>Waist circumference (cm)</label>
+  <input type="number" id="waist">
+  
+  </div>
+
+<div class="results">
+
+  <div class="result">
+    (1.A) Chains (FRONT panel):
+    <span id="result">0</span>
+  </div>
+
+  <div class="result">
+    (1.B - 2.B) Rows to armpit:
+    <span id="rowsToArmpitResult">0</span>
+  </div>
+
+  <div class="result">
+    (1.C - 2.C) Rows to neck:
+    <span id="rowsToNeckResult">0</span>
+  </div>  
+
+  <div class="result">
+    (1.D - 2.D) Neck stitches:
+    <span id="neckStitchesResult">0</span>
+  </div>  
+
+  <div class="result">
+    (1.E) Decreases (FRONT panel):
+    <span id="decreasesFrontResult">0</span>
+  </div>  
+
+  <div class="result">
+    (2.A) Chains (BACK panel):
+    <span id="chainBackResult">0</span>
+  </div>
+
+  <div class="result">
+    (2.E) Decreases (BACK panel):
+    <span id="decreasesBackResult">0</span>
+  </div> 
+
+  <div class="result">
+    (3.A) Neck band:
+    <span id="neckBandResult">0</span>
+  </div> 
+
+  <div class="result">
+    (3.B) Rows neck band:
+    <span id="rowsNeckBandResult">0</span>
+  </div> 
+
+  <div class="result">
+    (3.C) Stitches to start sewing the neck band to the back panel:
+    <span id="stsNeckBandResult">0</span>
+  </div> 
+
+    <div class="result">
+    (4.A) Chains for the belt:
+    <span id="chainsBeltResult">0</span>
+  </div> 
+
+</div>
+
+<script>
+
+function calculate() {
+
+  let gaugeStitchesPerCm =
+    Number(document.getElementById("gaugeStitchesPerCm").value);
+  
+  let gaugeRowsPerCm =
+    Number(document.getElementById("gaugeRowsPerCm").value);
+
+  let frontBust =
+    Number(document.getElementById("frontBust").value);
+
+  let backBust =
+    Number(document.getElementById("backBust").value);
+
+  let lengthToArmpit =
+    Number (document.getElementById("lengthToArmpit").value);
+
+  let lengthFromArmpitToNeck =
+    Number (document.getElementById("lengthFromArmpitToNeck").value);
+
+  let neckWidth =
+    Number (document.getElementById("neckWidth").value);
+
+  let neckCircumference =
+    Number (document.getElementById("neck").value);
+
+  let waistCircumference =
+   Number (document.getElementById("waist").value);
+
+  let chainsFrontPanel =
+    Math.round(((frontBust + 3) * gaugeStitchesPerCm) / 4) * 4 + 2;
+
+  let rowsToArmpit =
+   Math.round((lengthToArmpit - 5) * gaugeRowsPerCm);
+
+  let rowsToNeck =
+   Math.round(lengthFromArmpitToNeck * gaugeRowsPerCm);
+
+  let neckStitches =
+   Math.round(neckWidth * gaugeStitchesPerCm);
+
+  let decreasesFront =
+  Math.round((chainsFrontPanel - neckStitches) / rowsToNeck);
+
+  let chainsBackPanel =
+  Math.round(((backBust + 3) * gaugeStitchesPerCm) / 4) * 4 + 2;
+
+  let decreasesBack =
+  Math.round((chainsBackPanel - neckStitches) / rowsToNeck);
+
+  let neckBand =
+  neckCircumference * gaugeStitchesPerCm;
+
+  let rowsNeckBand =
+  5;
+
+  let stsNeckBand =
+  Math.round((neckCircumference / 6) - 4);
+
+  let chainBelt =
+  (waistCircumference * gaugeStitchesPerCm) + 230;
+
+  document.getElementById("result").innerText =
+    chainsFrontPanel;
+ 
+  document.getElementById("chainBackResult").innerText =
+    chainsBackPanel;
+
+  document.getElementById("rowsToArmpitResult").innerText =
+    rowsToArmpit;
+
+document.getElementById("rowsToNeckResult").innerText =
+  rowsToNeck;
+
+document.getElementById("neckStitchesResult").innerText =
+  neckStitches;
+
+document.getElementById("decreasesFrontResult").innerText =
+  decreasesFront;
+
+document.getElementById("decreasesBackResult").innerText =
+  decreasesBack;
+
+document.getElementById("neckBandResult").innerText =
+  neckBand;
+
+document.getElementById("rowsNeckBandResult").innerText =
+  rowsNeckBand;
+
+document.getElementById("stsNeckBandResult").innerText =
+  stsNeckBand;
+
+document.getElementById("chainsBeltResult").innerText =
+  chainBelt;
+
+
+}
+
+document.getElementById("frontBust")
+  .addEventListener("input", calculate);
+
+document.getElementById("backBust")
+  .addEventListener("input", calculate);
+
+document.getElementById("gaugeStitchesPerCm")
+  .addEventListener("input", calculate);
+
+document.getElementById("gaugeRowsPerCm")
+  .addEventListener("input", calculate);
+
+document.getElementById("lengthToArmpit")
+  .addEventListener("input", calculate);
+
+document.getElementById("lengthFromArmpitToNeck")
+  .addEventListener("input", calculate);
+
+document.getElementById("neckWidth")
+  .addEventListener("input", calculate);
+
+document.getElementById("neck")
+  .addEventListener("input", calculate);
+
+document.getElementById("waist")
+  .addEventListener("input", calculate);
+</script>
+
+</body>
+</html>
